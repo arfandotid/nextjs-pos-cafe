@@ -26,7 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   SIDEBAR_MENU_LIST,
   SidebarMenuKey,
-} from "@/constants/sidebar-constants";
+} from "@/constants/sidebar-constant";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/actions/auth-action";
