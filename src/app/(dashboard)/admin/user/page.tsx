@@ -1,3 +1,9 @@
-export default function AdminUserPage() {
-  return <div>User Page</div>;
+import UserManagement from "./_components/user";
+
+export const metadata = {
+  title: "User Management",
+};
+
+export default function UserManagementPage() {
+  return <UserManagement />;
 }
