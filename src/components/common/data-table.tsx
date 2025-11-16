@@ -9,6 +9,17 @@ import {
   TableCell,
 } from "../ui/table";
 import PaginationDatatable from "./pagination-data-table";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { LIMIT_LIST } from "@/constants/data-table-constant";
 
 export default function DataTable({
   header,
@@ -73,7 +84,28 @@ export default function DataTable({
         </Table>
       </Card>
       <div className="flex items-center justify-between">
-        <div></div>
+        <div className="flex items-center gap-2">
+          <Label>Show</Label>
+          <Select
+            value={currentLimit.toString()}
+            onValueChange={(value) => onChangeLimit(Number(value))}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select limit" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Rows per page</SelectLabel>
+                {LIMIT_LIST.map((limit) => (
+                  <SelectItem key={limit} value={limit.toString()}>
+                    {limit}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Label>rows</Label>
+        </div>
         {totalPages > 1 && (
           <div className="flex justify-end">
             <PaginationDatatable
