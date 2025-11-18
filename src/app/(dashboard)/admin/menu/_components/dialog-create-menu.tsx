@@ -8,7 +8,7 @@ import { createMenu } from "../actions";
 import { MenuForm, menuFormSchema } from "@/validations/menu-validation";
 import { INITIAL_MENU, INITIAL_STATE_MENU } from "@/constants/menu-constant";
 
-export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
+export default function DialogCreateMenu({ refetch }: { refetch: () => void }) {
   const form = useForm<MenuForm>({
     resolver: zodResolver(menuFormSchema),
     defaultValues: INITIAL_MENU,

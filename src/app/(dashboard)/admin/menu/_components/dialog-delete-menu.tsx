@@ -5,7 +5,7 @@ import { deleteMenu } from "../actions";
 import { toast } from "sonner";
 import { Menu } from "@/validations/menu-validation";
 
-export default function DialogDeleteUser({
+export default function DialogDeleteMenu({
   open,
   refetch,
   currentData,

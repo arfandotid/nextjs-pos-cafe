@@ -14,9 +14,7 @@ import { toast } from "sonner";
 import { Table } from "@/validations/table-validation";
 import { HEADER_TABLE_TABLE } from "@/constants/table-constant";
 import { cn } from "@/lib/utils";
-// import DialogCreateMenu from "./dialog-create-menu";
-// import DialogUpdateMenu from "./dialog-update-menu";
-// import DialogDeleteMenu from "./dialog-delete-menu";
+import DialogCreateTable from "./dialog-create-table";
 
 export default function TableManagement() {
   const supabase = createClient();
@@ -135,7 +133,7 @@ export default function TableManagement() {
             <DialogTrigger asChild>
               <Button variant="outline">Create</Button>
             </DialogTrigger>
-            {/* <DialogCreateMenu refetch={refetch} /> */}
+            <DialogCreateTable refetch={refetch} />
           </Dialog>
         </div>
       </div>
