@@ -15,6 +15,8 @@ import { Table } from "@/validations/table-validation";
 import { HEADER_TABLE_TABLE } from "@/constants/table-constant";
 import { cn } from "@/lib/utils";
 import DialogCreateTable from "./dialog-create-table";
+import DialogUpdateTable from "./dialog-update-table";
+import DialogDeleteTable from "./dialog-delete-table";
 
 export default function TableManagement() {
   const supabase = createClient();
@@ -41,7 +43,7 @@ export default function TableManagement() {
 
       if (currentSearch) {
         query.or(
-          `name.ilike.%${currentSearch}%,capacity.ilike.%${currentSearch}%,status.ilike.%${currentSearch}%`
+          `name.ilike.%${currentSearch}%,description.ilike.%${currentSearch}%,status.ilike.%${currentSearch}%`
         );
       }
 
@@ -147,18 +149,18 @@ export default function TableManagement() {
         onChangePage={handleChangePage}
         onChangeLimit={handleChangeLimit}
       />
-      {/* <DialogUpdateMenu
+      <DialogUpdateTable
         open={selectedAction !== null && selectedAction.type === "update"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
       />
-      <DialogDeleteMenu
+      <DialogDeleteTable
         open={selectedAction !== null && selectedAction.type === "delete"}
         refetch={refetch}
         currentData={selectedAction?.data}
         handleChangeAction={handleChangeAction}
-      /> */}
+      />
     </div>
   );
 }
