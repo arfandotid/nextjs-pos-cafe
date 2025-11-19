@@ -9,16 +9,20 @@ export const HEADER_TABLE_MENU = [
 
 export const CATEGORY_LIST = [
   {
-    value: "beverage",
-    label: "Beverage",
-  },
-  {
     value: "mains",
     label: "Mains",
   },
   {
+    value: "sides",
+    label: "Sides",
+  },
+  {
     value: "desserts",
     label: "Desserts",
+  },
+  {
+    value: "beverages",
+    label: "Beverages",
   },
 ];
 
