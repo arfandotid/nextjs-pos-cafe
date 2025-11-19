@@ -11,8 +11,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { Table } from "@/validations/table-validation";
 import { HEADER_TABLE_ORDER } from "@/constants/order-constant";
-import { Order } from "@/validations/order-validation";
+import DialogCreateOrder from "./dialog-create-order";
 
 export default function OrderManagement() {
   const supabase = createClient();
@@ -24,6 +25,7 @@ export default function OrderManagement() {
     handleChangeLimit,
     handleChangeSearch,
   } = useDataTable();
+
   const {
     data: orders,
     isLoading,
@@ -35,12 +37,12 @@ export default function OrderManagement() {
         .from("orders")
         .select(
           `
-            id,order_id,customer_name,status,payment_url,tables(name,id)
-          `,
+            id, order_id, customer_name, status, payment_url, tables (name, id)
+            `,
           { count: "exact" }
         )
         .range((currentPage - 1) * currentLimit, currentPage * currentLimit - 1)
-        .order("created_at", { ascending: false });
+        .order("created_at");
 
       if (currentSearch) {
         query.or(
@@ -59,8 +61,21 @@ export default function OrderManagement() {
     },
   });
 
+  const { data: tables, refetch: refetchTables } = useQuery({
+    queryKey: ["tables"],
+    queryFn: async () => {
+      const result = await supabase
+        .from("tables")
+        .select("*")
+        .order("created_at")
+        .order("status");
+
+      return result.data;
+    },
+  });
+
   const [selectedAction, setSelectedAction] = useState<{
-    data: Order;
+    data: Table;
     type: "update" | "delete";
   } | null>(null);
 
@@ -109,7 +124,7 @@ export default function OrderManagement() {
             <DialogTrigger asChild>
               <Button variant="outline">Create</Button>
             </DialogTrigger>
-            {/* <DialogCreateOrder refetch={refetch} /> */}
+            <DialogCreateOrder tables={tables} refetch={refetch} />
           </Dialog>
         </div>
       </div>
@@ -123,18 +138,6 @@ export default function OrderManagement() {
         onChangePage={handleChangePage}
         onChangeLimit={handleChangeLimit}
       />
-      {/* <DialogUpdateOrder
-        open={selectedAction !== null && selectedAction.type === "update"}
-        refetch={refetch}
-        currentData={selectedAction?.data}
-        handleChangeAction={handleChangeAction}
-      /> */}
-      {/* <DialogDeleteOrder
-        open={selectedAction !== null && selectedAction.type === "delete"}
-        refetch={refetch}
-        currentData={selectedAction?.data}
-        handleChangeAction={handleChangeAction}
-      /> */}
     </div>
   );
 }
