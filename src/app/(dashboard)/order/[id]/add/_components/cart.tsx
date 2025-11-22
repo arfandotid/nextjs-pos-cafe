@@ -7,6 +7,7 @@ import useDebounce from "@/hooks/use-debounce";
 import { convertIDR } from "@/lib/utils";
 import { Cart } from "@/types/order";
 import { Menu } from "@/validations/menu-validation";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 
@@ -15,6 +16,8 @@ export default function CartSection({
   carts,
   setCarts,
   onAddToCart,
+  isLoading,
+  onOrder,
 }: {
   order:
     | {
@@ -27,6 +30,8 @@ export default function CartSection({
   carts: Cart[];
   setCarts: Dispatch<SetStateAction<Cart[]>>;
   onAddToCart: (menu: Menu, action: "decrement" | "increment") => void;
+  isLoading: boolean;
+  onOrder: () => void;
 }) {
   const debounce = useDebounce();
 
@@ -113,6 +118,14 @@ export default function CartSection({
           ) : (
             <p className="text-sm">No item in cart</p>
           )}
+          <form>
+            <Button
+              formAction={onOrder}
+              className="w-full font-semibold bg-teal-500 hover:bg-teal-600 cursor-pointer text-white"
+            >
+              {isLoading ? <Loader2 className="animate-spin" /> : "Order"}
+            </Button>
+          </form>
         </div>
       </CardContent>
     </Card>
