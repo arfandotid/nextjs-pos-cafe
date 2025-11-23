@@ -30,7 +30,7 @@ export async function createOrder(
 
   const supabase = await createClient();
 
-  const orderId = `CAFE-${Date.now()}`;
+  const orderId = `WPUCAFE-${Date.now()}`;
 
   const [orderResult, tableResult] = await Promise.all([
     supabase.from("orders").insert({
@@ -139,7 +139,7 @@ export async function addOrderItem(
   redirect(`/order/${data.order_id}`);
 }
 
-export async function updateStatusOrderItem(
+export async function updateStatusOrderitem(
   prevState: FormState,
   formData: FormData
 ) {

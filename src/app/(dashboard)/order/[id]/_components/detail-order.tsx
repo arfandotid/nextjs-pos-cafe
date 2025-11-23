@@ -1,7 +1,6 @@
 "use client";
 
 import DataTable from "@/components/common/data-table";
-import DropdownAction from "@/components/common/dropdown-action";
 import { Button } from "@/components/ui/button";
 import { HEADER_TABLE_DETAIL_ORDER } from "@/constants/order-constant";
 import useDataTable from "@/hooks/use-data-table";
@@ -20,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
-import { updateStatusOrderItem } from "../../actions";
+import { updateStatusOrderitem } from "../../actions";
 import { INITIAL_STATE_ACTION } from "@/constants/general-constant";
 
 export default function DetailOrder({ id }: { id: string }) {
@@ -56,12 +55,12 @@ export default function DetailOrder({ id }: { id: string }) {
     queryFn: async () => {
       const result = await supabase
         .from("orders_menus")
-        .select("*, menus(id, name, image_url, price)", { count: "exact" })
+        .select("*, menus (id, name, image_url, price)", { count: "exact" })
         .eq("order_id", order?.id)
         .order("status");
 
       if (result.error)
-        toast.error("Get Order Menu data failed", {
+        toast.error("Get order menu data failed", {
           description: result.error.message,
         });
 
@@ -71,7 +70,7 @@ export default function DetailOrder({ id }: { id: string }) {
   });
 
   const [updateStatusOrderState, updateStatusOrderAction] = useActionState(
-    updateStatusOrderItem,
+    updateStatusOrderitem,
     INITIAL_STATE_ACTION
   );
 
@@ -112,12 +111,12 @@ export default function DetailOrder({ id }: { id: string }) {
             alt={item.menus.name}
             width={40}
             height={40}
-            className="rounded-md"
+            className="rounded"
           />
           <div className="flex flex-col">
             {item.menus.name} x {item.quantity}
             <span className="text-xs text-muted-foreground">
-              {item.notes || "-"}
+              {item.notes || "No Notes"}
             </span>
           </div>
         </div>,
