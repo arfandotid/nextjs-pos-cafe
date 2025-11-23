@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import useDataTable from "@/hooks/use-data-table";
 import { createClient } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { Ban, Link2Icon, Pencil, ScrollText, Trash2 } from "lucide-react";
 import {
   startTransition,
   useActionState,
@@ -18,13 +19,16 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Table } from "@/validations/table-validation";
-import { HEADER_TABLE_ORDER } from "@/constants/order-constant";
+import { HEADER_TABLE_TABLE } from "@/constants/table-constant";
+import {
+  HEADER_TABLE_ORDER,
+  INITIAL_STATE_ORDER,
+} from "@/constants/order-constant";
 import DialogCreateOrder from "./dialog-create-order";
 import { updateReservation } from "../actions";
-import { FormState } from "@/types/general";
 import { INITIAL_STATE_ACTION } from "@/constants/general-constant";
-import { Ban, Link2Icon, ScrollText } from "lucide-react";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function OrderManagement() {
   const supabase = createClient();
@@ -36,6 +40,7 @@ export default function OrderManagement() {
     handleChangeLimit,
     handleChangeSearch,
   } = useDataTable();
+  const profile = useAuthStore((state) => state.profile);
 
   const {
     data: orders,
@@ -115,10 +120,9 @@ export default function OrderManagement() {
     status: string;
   }) => {
     const formData = new FormData();
-    Object.entries({ id, table_id, status }).forEach(([key, value]) => {
-      formData.append(key, value);
+    Object.entries({ id, table_id, status }).forEach(([Key, value]) => {
+      formData.append(Key, value);
     });
-
     startTransition(() => {
       reservedAction(formData);
     });
@@ -181,7 +185,7 @@ export default function OrderManagement() {
         </div>,
         <DropdownAction
           menu={
-            order.status === "reserved"
+            order.status === "reserved" && profile?.role !== "kitchen"
               ? reservedActionList.map((item) => ({
                   label: item.label,
                   action: () =>
@@ -219,12 +223,14 @@ export default function OrderManagement() {
             placeholder="Search..."
             onChange={(e) => handleChangeSearch(e.target.value)}
           />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Create</Button>
-            </DialogTrigger>
-            <DialogCreateOrder tables={tables} refetch={refetch} />
-          </Dialog>
+          {profile?.role !== "kitchen" && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Create</Button>
+              </DialogTrigger>
+              <DialogCreateOrder tables={tables} refetch={refetch} />
+            </Dialog>
+          )}
         </div>
       </div>
       <DataTable
